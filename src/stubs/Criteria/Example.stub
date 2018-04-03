@@ -1,6 +1,6 @@
 <?php
 
-namespace %namespaces.Criteria%;
+namespace %namespaces.criteria%;
 
 use Angkosal\Repository\Repositories\Criteria\CriterionInterface;
 
