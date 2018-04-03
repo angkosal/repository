@@ -7,7 +7,6 @@
         "angkosal",
         "database"
     ],
-    "type": "laravel, repository, angkosal",
     "license": "MIT",
     "authors": [
         {
