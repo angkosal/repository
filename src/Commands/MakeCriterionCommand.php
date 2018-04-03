@@ -42,20 +42,20 @@ class MakeCriterionCommand extends RepositoryCommand
     protected function createCriterion()
     {
         $content = $this->fileManager->get(
-            __DIR__.'/../stubs/Eloquent/Criteria/Example.stub'
+            __DIR__.'/../stubs/Criteria/Example.stub'
         );
 
         $criterion = $this->argument('criterion');
 
         $replacements = [
-            '%namespaces.repositories%' => $this->config('namespaces.repositories'),
+            '%namespaces.criteria%' => $this->config('namespaces.criteria'),
             '%criterion%' => $criterion,
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
 
         $fileName = $criterion;
-        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.repositories').'Criteria';
+        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.criteria');
         $filePath = $fileDirectory.'/'.$fileName.'.php';
 
         if (!$this->fileManager->exists($fileDirectory)) {

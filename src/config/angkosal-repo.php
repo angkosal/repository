@@ -1,21 +1,17 @@
 <?php
 
 return [
-
-    /**
-     * Namespaces are being prefixed with the applications base namespace.
-     */
+    // Namespaces are being prefixed with the applications base namespace.
     'namespaces' => [
-        'contracts'    => 'Repositories\Contracts',
+        'contracts' => 'Repositories\Contracts',
         'repositories' => 'Repositories\Eloquent',
+        'criteria' => 'Repositories\Criteria',
     ],
 
-    /**
-     * Paths will be used with the `app()->basePath().'/app/'` function to reach app directory.
-     */
+    // Paths will be used with the `app()->basePath().'/app/'` function to reach app directory.
     'paths' => [
-        'contracts'    => 'Repositories/Contracts/',
+        'contracts' => 'Repositories/Contracts/',
         'repositories' => 'Repositories/Eloquent/',
+        'criteria' => 'Repositories\Criteria',
     ],
-
 ];
