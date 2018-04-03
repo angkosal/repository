@@ -2,7 +2,7 @@
 
 namespace Angkosal\Repository\Commands;
 
-class MakeCriterionCommand extends MakeRepositoryCommand
+class MakeCriterionCommand extends RepositoryCommand
 {
     /**
      * The name and signature of the console command.

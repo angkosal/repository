@@ -4,7 +4,7 @@ namespace Angkosal\Repository\Commands;
 
 use Illuminate\Support\Facades\Artisan;
 
-class MakeRepositoryCommand extends MakeRepositoryCommand
+class MakeRepositoryCommand extends RepositoryCommand
 {
     /**
      * The name and signature of the console command.
