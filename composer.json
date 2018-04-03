@@ -1,6 +1,12 @@
 {
     "name": "angkosal/repository",
     "description": "Laravel repository generator.",
+    "keywords": [
+        "laravel",
+        "repository",
+        "angkosal",
+        "database"
+    ],
     "type": "laravel, repository, angkosal",
     "license": "MIT",
     "authors": [
