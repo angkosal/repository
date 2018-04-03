@@ -44,6 +44,8 @@ class MakeRepositoryCommand extends RepositoryCommand
      */
     protected $modelName;
 
+    protected $subDir;
+
     /**
      * Create a new command instance.
      */
@@ -74,14 +76,14 @@ class MakeRepositoryCommand extends RepositoryCommand
         $content = $this->fileManager->get($this->stubs['contract']);
 
         $replacements = [
-            '%namespaces.contracts%' => $this->appNamespace.$this->config('namespaces.contracts'),
+            '%namespaces.contracts%' => $this->appNamespace.$this->config('namespaces.contracts').$this->subDir,
             '%modelName%' => $this->modelName,
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
 
         $fileName = $this->modelName.'Repository';
-        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.contracts');
+        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.contracts').$this->subDir.'\\';
         $filePath = $fileDirectory.$fileName.'.php';
 
         if (!$this->fileManager->exists($fileDirectory)) {
@@ -104,7 +106,7 @@ class MakeRepositoryCommand extends RepositoryCommand
 
         $this->line("The contract [{$fileName}] has been created.");
 
-        return [$this->config('namespaces.contracts').'\\'.$fileName, $fileName];
+        return [$this->config('namespaces.contracts').$this->subDir.'\\'.$fileName, $fileName];
     }
 
     /**
@@ -122,13 +124,13 @@ class MakeRepositoryCommand extends RepositoryCommand
             '%contractName%' => $contractName,
             '%model%' => $this->model,
             '%modelName%' => $this->modelName,
-            '%namespaces.repositories%' => $this->appNamespace.$this->config('namespaces.repositories'),
+            '%namespaces.repositories%' => $this->appNamespace.$this->config('namespaces.repositories').$this->subDir,
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
 
         $fileName = 'Eloquent'.$this->modelName.'Repository';
-        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.repositories');
+        $fileDirectory = app()->basePath().'/app/'.$this->config('paths.repositories').$this->subDir.'\\';
         $filePath = $fileDirectory.$fileName.'.php';
 
         // Check if the directory exists, if not create...
@@ -156,9 +158,11 @@ class MakeRepositoryCommand extends RepositoryCommand
      */
     protected function checkModel()
     {
-        $model = $this->appNamespace.$this->argument('model');
+        $model = str_replace('/', '\\', $this->argument('model'));
+        $model_arr = explode('\\', $model);
 
-        $this->model = str_replace('/', '\\', $model);
+        $this->modelName = array_pop($model_arr);
+        $this->model = $this->appNamespace.$this->modelName;
 
         if (!$this->isLumen() && $this->laravel->runningInConsole()) {
             if (!class_exists($this->model)) {
@@ -176,9 +180,11 @@ class MakeRepositoryCommand extends RepositoryCommand
             }
         }
 
-        $modelParts = explode('\\', $this->model);
-
-        $this->modelName = array_pop($modelParts);
+        if (count($model_arr) > 0) {
+            $this->subDir = '\\'.implode('\\', $model_arr);
+        } else {
+            $this->subDir = '';
+        }
     }
 
     protected function isLumen()
