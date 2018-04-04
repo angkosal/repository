@@ -1,0 +1,32 @@
+{
+    "name": "angkosal/repository",
+    "description": "Laravel repository generator.",
+    "keywords": [
+        "laravel",
+        "repository",
+        "angkosal",
+        "database"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ang Kosal",
+            "email": "angkosal@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "5.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Angkosal\\Repository\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Angkosal\\Repository\\RepositoryServiceProvider"
+            ]
+        }
+    }
+}
