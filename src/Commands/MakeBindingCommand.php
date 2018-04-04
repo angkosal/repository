@@ -78,6 +78,7 @@ class MakeBindingCommand extends RepositoryCommand
             $this->call('make:provider', [
                 'name' => $this->providerName,
             ]);
+
             // placeholder to mark the place in file where to prepend repository bindings
             $provider = File::get($this->providerDist);
             File::put($this->providerDist, vsprintf(str_replace('//', '%s', $provider), [
