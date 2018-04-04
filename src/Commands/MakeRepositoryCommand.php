@@ -156,7 +156,6 @@ class MakeRepositoryCommand extends RepositoryCommand
                 return;
             }
         }
-
         $this->line("The repository [{$fileName}] has been created.");
 
         $this->fileManager->put($filePath, $content);
