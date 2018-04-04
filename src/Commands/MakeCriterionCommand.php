@@ -48,7 +48,7 @@ class MakeCriterionCommand extends RepositoryCommand
         $criterion = $this->argument('criterion');
 
         $replacements = [
-            '%namespaces.criteria%' => $this->config('namespaces.criteria'),
+            '%namespaces.criteria%' => $this->appNamespace.$this->config('namespaces.criteria'),
             '%criterion%' => $criterion,
         ];
 
