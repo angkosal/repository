@@ -57,7 +57,6 @@ class MakeBindingCommand extends RepositoryCommand
         $provider = File::get($this->providerDist);
         $repositoryInterface = '\\'.$this->getRepository().'::class';
         $repositoryEloquent = '\\'.$this->getEloquentRepository().'::class';
-
         File::put($this->providerDist, str_replace($this->bindPlaceholder, "\$this->app->bind({$repositoryInterface}, {$repositoryEloquent});".PHP_EOL.'        '.$this->bindPlaceholder, $provider));
 
         $this->info('Binding have been added to RepositoryServiceProvider created successfully.');
