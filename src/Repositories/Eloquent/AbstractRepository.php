@@ -2,7 +2,7 @@
 
 namespace Angkosal\Repository\Repositories\Eloquent;
 
-use Angkosal\Repository\Exceptions\NoEntityDefined;
+use Angkosal\Repository\Exceptions\NoModelDefined;
 use Angkosal\Repository\Repositories\Contracts\RepositoryInterface;
 use Angkosal\Repository\Repositories\Criteria\CriteriaInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,11 +12,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     /**
      * @var mixed
      */
-    protected $entity;
+    protected $model;
 
     public function __construct()
     {
-        $this->entity = $this->resolveEntity();
+        $this->model = $this->resolveModel();
     }
 
     /**
@@ -26,7 +26,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function all($paginate = null)
     {
-        return $this->processPagination($this->entity, $paginate);
+        return $this->processPagination($this->model, $paginate);
     }
 
     /**
@@ -36,11 +36,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function find($id)
     {
-        $model = $this->entity->find($id);
+        $model = $this->model->find($id);
 
         if (!$model) {
             throw (new ModelNotFoundException())->setModel(
-                get_class($this->entity->getModel()),
+                get_class($this->model->getModel()),
                 $id
             );
         }
@@ -57,7 +57,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function findWhere($column, $value, $paginate = null)
     {
-        $query = $this->entity->where($column, $value);
+        $query = $this->model->where($column, $value);
 
         return $this->processPagination($query, $paginate);
     }
@@ -70,11 +70,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function findWhereFirst($column, $value)
     {
-        $model = $this->entity->where($column, $value)->first();
+        $model = $this->model->where($column, $value)->first();
 
         if (!$model) {
             throw (new ModelNotFoundException())->setModel(
-                get_class($this->entity->getModel())
+                get_class($this->model->getModel())
             );
         }
 
@@ -86,7 +86,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function findWhereLike($columns, $value, $paginate = null)
     {
-        $query = $this->entity;
+        $query = $this->model;
 
         if (is_string($columns)) {
             $columns = [$columns];
@@ -106,7 +106,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function paginate($perPage = 10)
     {
-        return $this->entity->paginate($perPage);
+        return $this->model->paginate($perPage);
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function create(array $properties)
     {
-        return $this->entity->create($properties);
+        return $this->model->create($properties);
     }
 
     /**
@@ -150,19 +150,19 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         $criteria = array_flatten($criteria);
 
         foreach ($criteria as $criterion) {
-            $this->entity = $criterion->apply($this->entity);
+            $this->model = $criterion->apply($this->model);
         }
 
         return $this;
     }
 
-    protected function resolveEntity()
+    protected function resolveModel()
     {
-        if (!method_exists($this, 'entity')) {
-            throw new NoEntityDefined();
+        if (!method_exists($this, 'model')) {
+            throw new NoModelDefined();
         }
 
-        return app($this->entity());
+        return app($this->model());
     }
 
     private function processPagination($query, $paginate)
