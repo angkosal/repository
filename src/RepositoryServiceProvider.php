@@ -25,11 +25,11 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/angkosal-repo.php', 'angkosal-repo');
+        $this->mergeConfigFrom(__DIR__.'/config/repository.php', 'repository');
 
         $this->publishes([
-            __DIR__.'/config/angkosal-repo.php' => app()->basePath().'/config/angkosal-repo.php',
-        ], 'angkosal-repo-config');
+            __DIR__.'/config/repository.php' => app()->basePath().'/config/repository.php',
+        ], 'config');
 
         $this->registerCommands();
     }
