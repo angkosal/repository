@@ -48,6 +48,10 @@ class MakeBindingCommand extends RepositoryCommand
     {
         $this->makeProviderIfNotExist();
 
+        if ($this->isBinded()) {
+            return;
+        }
+
         $provider = File::get($this->providerDist);
         $repositoryInterface = '\\'.$this->getRepository().'::class';
         $repositoryEloquent = '\\'.$this->getEloquentRepository().'::class';
@@ -55,6 +59,16 @@ class MakeBindingCommand extends RepositoryCommand
         File::put($this->providerDist, str_replace($this->bindPlaceholder, "\$this->app->bind({$repositoryInterface}, {$repositoryEloquent});".PHP_EOL.'        '.$this->bindPlaceholder, $provider));
 
         $this->info('Binding have been added to RepositoryServiceProvider created successfully.');
+    }
+
+    public function isBinded()
+    {
+        $provider = File::get($this->providerDist);
+        if (strpos($provider, $this->getRepository())) {
+            return true;
+        }
+
+        return false;
     }
 
     public function makeProviderIfNotExist()
