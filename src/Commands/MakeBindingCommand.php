@@ -49,6 +49,8 @@ class MakeBindingCommand extends RepositoryCommand
         $this->makeProviderIfNotExist();
 
         if ($this->isBinded()) {
+            $this->line('Binding is already exist in RepositoryServiceProvider');
+
             return;
         }
 
