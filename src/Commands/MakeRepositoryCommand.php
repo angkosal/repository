@@ -66,6 +66,8 @@ class MakeRepositoryCommand extends RepositoryCommand
         list($contract, $contractName) = $this->createContract();
 
         $this->createRepository($contract, $contractName);
+
+        $this->bindingRepository();
     }
 
     public function bindingRepository()
