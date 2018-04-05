@@ -180,23 +180,6 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     }
 
     /**
-     * Applies the given where conditions to the model.
-     *
-     * @param array $where
-     */
-    protected function applyConditions(array $where)
-    {
-        foreach ($where as $field => $value) {
-            if (is_array($value)) {
-                list($field, $condition, $val) = $value;
-                $this->model = $this->model->where($field, $condition, $val);
-            } else {
-                $this->model = $this->model->where($field, '=', $value);
-            }
-        }
-    }
-
-    /**
      * Build pagination.
      *
      * @param Builder  $query

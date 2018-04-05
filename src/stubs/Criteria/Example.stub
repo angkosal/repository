@@ -6,13 +6,6 @@ use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
 
 class %criteria% implements CriterionInterface
 {
-    protected $field;
-
-    public function __construct($field)
-    {
-        $this->field = $field;
-    }
-
     /**
      * Apply the query filtering.
      * 
@@ -21,6 +14,6 @@ class %criteria% implements CriterionInterface
      */
     public function apply($entity)
     {
-        return $entity->where('field', $this->field);
+        //
     }
 }
