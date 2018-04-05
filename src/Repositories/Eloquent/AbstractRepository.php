@@ -16,6 +16,9 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     protected $model;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->model = $this->resolveModel();
@@ -158,11 +161,9 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         return $this;
     }
 
-    public function resetModel()
-    {
-        $this->resolveModel();
-    }
-
+    /**
+     * Resolve model.
+     */
     protected function resolveModel()
     {
         if (!method_exists($this, 'model')) {
@@ -178,6 +179,14 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         return $model;
     }
 
+    /**
+     * Build pagination.
+     *
+     * @param Builder  $query
+     * @param null|int $paginate
+     *
+     * @return Collection
+     */
     private function processPagination($query, $paginate)
     {
         return $paginate ? $query->paginate($paginate) : $query->get();
