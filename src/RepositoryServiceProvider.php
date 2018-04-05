@@ -3,14 +3,14 @@
 namespace Angkosal\Repository;
 
 use Angkosal\Repository\Commands\MakeBindingCommand;
-use Angkosal\Repository\Commands\MakeCriterionCommand;
+use Angkosal\Repository\Commands\MakeCriteriaCommand;
 use Angkosal\Repository\Commands\MakeRepositoryCommand;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $repoCommands = [
-        MakeCriterionCommand::class,
+        MakeCriteriaCommand::class,
         MakeRepositoryCommand::class,
         MakeBindingCommand::class,
     ];

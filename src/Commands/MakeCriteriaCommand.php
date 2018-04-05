@@ -2,21 +2,21 @@
 
 namespace Angkosal\Repository\Commands;
 
-class MakeCriterionCommand extends RepositoryCommand
+class MakeCriteriaCommand extends RepositoryCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:criterion {criterion}';
+    protected $signature = 'make:criteria {criteria}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new criterion';
+    protected $description = 'Create a new criteria';
 
     /**
      * Create a new command instance.
@@ -33,28 +33,28 @@ class MakeCriterionCommand extends RepositoryCommand
      */
     public function handle()
     {
-        $this->createCriterion();
+        $this->createCriteria();
     }
 
     /**
-     * Create a new criterion.
+     * Create a new criteria.
      */
-    protected function createCriterion()
+    protected function createCriteria()
     {
         $content = $this->fileManager->get(
             __DIR__.'/../stubs/Criteria/Example.stub'
         );
 
-        $criterion = $this->argument('criterion');
+        $criteria = $this->argument('criteria');
 
         $replacements = [
             '%namespaces.criteria%' => $this->appNamespace.$this->config('namespaces.criteria'),
-            '%criterion%' => $criterion,
+            '%criteria%' => $criteria,
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
 
-        $fileName = $criterion;
+        $fileName = $criteria;
         $fileDirectory = app()->basePath().'/app/'.$this->config('paths.criteria');
         $filePath = $fileDirectory.'/'.$fileName.'.php';
 
@@ -63,10 +63,10 @@ class MakeCriterionCommand extends RepositoryCommand
         }
 
         if ($this->laravel->runningInConsole() && $this->fileManager->exists($filePath)) {
-            $response = $this->ask("The criterion [{$fileName}] already exists. Do you want to overwrite it?", 'Yes');
+            $response = $this->ask("The criteria [{$fileName}] already exists. Do you want to overwrite it?", 'Yes');
 
             if (!$this->isResponsePositive($response)) {
-                $this->line("The criterion [{$fileName}] will not be overwritten.");
+                $this->line("The criteria [{$fileName}] will not be overwritten.");
 
                 return;
             }
@@ -76,6 +76,6 @@ class MakeCriterionCommand extends RepositoryCommand
             $this->fileManager->put($filePath, $content);
         }
 
-        $this->line("The criterion [{$fileName}] has been created.");
+        $this->line("The criteria [{$fileName}] has been created.");
     }
 }
