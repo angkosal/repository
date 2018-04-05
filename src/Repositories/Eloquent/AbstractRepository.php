@@ -3,8 +3,10 @@
 namespace Angkosal\Repository\Repositories\Eloquent;
 
 use Angkosal\Repository\Exceptions\NoModelDefined;
+use Angkosal\Repository\Exceptions\RepositoryException;
 use Angkosal\Repository\Repositories\Contracts\RepositoryInterface;
 use Angkosal\Repository\Repositories\Criteria\CriteriaInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
@@ -167,7 +169,13 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
             throw new NoModelDefined("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
-        return app($this->model());
+        $model = app($this->model());
+
+        if (!$model instanceof Model) {
+            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+        }
+
+        return $model;
     }
 
     private function processPagination($query, $paginate)
