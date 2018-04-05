@@ -156,10 +156,15 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         return $this;
     }
 
+    public function resetModel()
+    {
+        $this->resolveModel();
+    }
+
     protected function resolveModel()
     {
         if (!method_exists($this, 'model')) {
-            throw new NoModelDefined();
+            throw new NoModelDefined("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
         return app($this->model());
