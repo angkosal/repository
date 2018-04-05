@@ -1,8 +1,8 @@
 <?php
 
-namespace Angkosal\Repository\Repositories\Eloquent\Criteria;
+namespace Angkosal\Repository\Repositories\Criteria;
 
-use Angkosal\Repository\Repositories\Criteria\CriterionInterface;
+use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
 
 class ByUser implements CriterionInterface
 {

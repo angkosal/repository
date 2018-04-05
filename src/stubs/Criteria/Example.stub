@@ -2,7 +2,7 @@
 
 namespace %namespaces.criteria%;
 
-use Angkosal\Repository\Repositories\Criteria\CriterionInterface;
+use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
 
 class %criteria% implements CriterionInterface
 {
