@@ -9,10 +9,10 @@ class %criteria% implements CriterionInterface
     /**
      * Apply the query filtering.
      * 
-     * @param  \Illuminate\Database\Eloquent\Builder $entity
+     * @param  \Illuminate\Database\Eloquent\Builder $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply($entity)
+    public function apply($model)
     {
         //
     }

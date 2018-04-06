@@ -12,13 +12,6 @@ interface RepositoryInterface
 
     public function findWhereFirst($column, $value);
 
-    /**
-     * @param string       $column
-     * @param array|string $value
-     * @param null|number  $paginate
-     *
-     * @return Collection|Pagination
-     */
     public function findWhereLike($column, $value, $paginate = 0);
 
     public function paginate($perPage = 10);
