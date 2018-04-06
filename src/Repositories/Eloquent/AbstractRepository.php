@@ -87,7 +87,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     /**
      * {@inheritdoc}
      */
-    public function findWhereLike($columns, $value, $paginate = null)
+    public function findWhereLike($columns, $value)
     {
         $query = $this->model;
 

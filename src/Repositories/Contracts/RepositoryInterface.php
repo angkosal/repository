@@ -12,7 +12,7 @@ interface RepositoryInterface
 
     public function findWhereFirst($column, $value);
 
-    public function findWhereLike($column, $value, $paginate = 0);
+    public function findWhereLike($column, $value);
 
     public function paginate($perPage = 10);
 
