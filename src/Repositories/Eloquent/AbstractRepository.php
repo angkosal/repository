@@ -31,7 +31,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function all($paginate = null)
     {
-        return $this->processPagination($this->model, $paginate);
+        return $this->model->get();
     }
 
     /**
@@ -60,11 +60,9 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      *
      * @return mixed
      */
-    public function findWhere($column, $value, $paginate = null)
+    public function findWhere($column, $value)
     {
-        $query = $this->model->where($column, $value);
-
-        return $this->processPagination($query, $paginate);
+        return $this->model->where($column, $value)->get();
     }
 
     /**
@@ -101,7 +99,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
             $query->orWhere($column, 'like', $value);
         }
 
-        return $this->processPagination($query, $paginate);
+        return $query->get();
     }
 
     /**
