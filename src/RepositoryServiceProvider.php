@@ -2,15 +2,17 @@
 
 namespace Angkosal\Repository;
 
-use Angkosal\Repository\Commands\MakeCriterionCommand;
+use Angkosal\Repository\Commands\MakeBindingCommand;
+use Angkosal\Repository\Commands\MakeCriteriaCommand;
 use Angkosal\Repository\Commands\MakeRepositoryCommand;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $repoCommands = [
-        MakeCriterionCommand::class,
+        MakeCriteriaCommand::class,
         MakeRepositoryCommand::class,
+        MakeBindingCommand::class,
     ];
 
     /**
@@ -25,11 +27,11 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/angkosal-repo.php', 'angkosal-repo');
+        $this->mergeConfigFrom(__DIR__.'/config/repository.php', 'repository');
 
         $this->publishes([
-            __DIR__.'/config/angkosal-repo.php' => app()->basePath().'/config/angkosal-repo.php',
-        ], 'angkosal-repo-config');
+            __DIR__.'/config/repository.php' => app()->basePath().'/config/repository.php',
+        ], 'config');
 
         $this->registerCommands();
     }

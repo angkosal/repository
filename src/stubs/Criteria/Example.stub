@@ -2,25 +2,18 @@
 
 namespace %namespaces.criteria%;
 
-use Angkosal\Repository\Repositories\Criteria\CriterionInterface;
+use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
 
-class %criterion% implements CriterionInterface
+class %criteria% implements CriterionInterface
 {
-    protected $field;
-
-    public function __construct($field)
-    {
-        $this->field = $field;
-    }
-
     /**
      * Apply the query filtering.
      * 
-     * @param  \Illuminate\Database\Eloquent\Builder $entity
+     * @param  \Illuminate\Database\Eloquent\Builder $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply($entity)
+    public function apply($model)
     {
-        return $entity->where('field', $this->field);
+        //
     }
 }

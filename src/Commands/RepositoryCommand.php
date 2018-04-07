@@ -50,6 +50,6 @@ class RepositoryCommand extends Command
      */
     protected function config($key)
     {
-        return config('angkosal-repo.'.$key);
+        return config('repository.'.$key);
     }
 }

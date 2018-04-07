@@ -66,6 +66,15 @@ class MakeRepositoryCommand extends RepositoryCommand
         list($contract, $contractName) = $this->createContract();
 
         $this->createRepository($contract, $contractName);
+
+        $this->bindingRepository();
+    }
+
+    public function bindingRepository()
+    {
+        Artisan::call('make:binding', [
+            'repository' => $this->argument('model'),
+        ]);
     }
 
     /**
@@ -147,7 +156,6 @@ class MakeRepositoryCommand extends RepositoryCommand
                 return;
             }
         }
-
         $this->line("The repository [{$fileName}] has been created.");
 
         $this->fileManager->put($filePath, $content);

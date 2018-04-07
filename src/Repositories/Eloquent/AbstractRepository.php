@@ -2,9 +2,11 @@
 
 namespace Angkosal\Repository\Repositories\Eloquent;
 
-use Angkosal\Repository\Exceptions\NoEntityDefined;
+use Angkosal\Repository\Exceptions\NoModelDefined;
+use Angkosal\Repository\Exceptions\RepositoryException;
+use Angkosal\Repository\Repositories\Contracts\CriteriaInterface;
 use Angkosal\Repository\Repositories\Contracts\RepositoryInterface;
-use Angkosal\Repository\Repositories\Criteria\CriteriaInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
@@ -12,11 +14,14 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     /**
      * @var mixed
      */
-    protected $entity;
+    protected $model;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
-        $this->entity = $this->resolveEntity();
+        $this->model = $this->resolveModel();
     }
 
     /**
@@ -26,7 +31,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function all($paginate = null)
     {
-        return $this->processPagination($this->entity, $paginate);
+        return $this->model->get();
     }
 
     /**
@@ -36,11 +41,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function find($id)
     {
-        $model = $this->entity->find($id);
+        $model = $this->model->find($id);
 
         if (!$model) {
             throw (new ModelNotFoundException())->setModel(
-                get_class($this->entity->getModel()),
+                get_class($this->model->getModel()),
                 $id
             );
         }
@@ -55,11 +60,9 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      *
      * @return mixed
      */
-    public function findWhere($column, $value, $paginate = null)
+    public function findWhere($column, $value)
     {
-        $query = $this->entity->where($column, $value);
-
-        return $this->processPagination($query, $paginate);
+        return $this->model->where($column, $value)->get();
     }
 
     /**
@@ -70,11 +73,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function findWhereFirst($column, $value)
     {
-        $model = $this->entity->where($column, $value)->first();
+        $model = $this->model->where($column, $value)->first();
 
         if (!$model) {
             throw (new ModelNotFoundException())->setModel(
-                get_class($this->entity->getModel())
+                get_class($this->model->getModel())
             );
         }
 
@@ -84,9 +87,9 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     /**
      * {@inheritdoc}
      */
-    public function findWhereLike($columns, $value, $paginate = null)
+    public function findWhereLike($columns, $value)
     {
-        $query = $this->entity;
+        $query = $this->model;
 
         if (is_string($columns)) {
             $columns = [$columns];
@@ -96,7 +99,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
             $query->orWhere($column, 'like', $value);
         }
 
-        return $this->processPagination($query, $paginate);
+        return $query->get();
     }
 
     /**
@@ -106,7 +109,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function paginate($perPage = 10)
     {
-        return $this->entity->paginate($perPage);
+        return $this->model->paginate($perPage);
     }
 
     /**
@@ -116,7 +119,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      */
     public function create(array $properties)
     {
-        return $this->entity->create($properties);
+        return $this->model->create($properties);
     }
 
     /**
@@ -150,21 +153,38 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         $criteria = array_flatten($criteria);
 
         foreach ($criteria as $criterion) {
-            $this->entity = $criterion->apply($this->entity);
+            $this->model = $criterion->apply($this->model);
         }
 
         return $this;
     }
 
-    protected function resolveEntity()
+    /**
+     * Resolve model.
+     */
+    protected function resolveModel()
     {
-        if (!method_exists($this, 'entity')) {
-            throw new NoEntityDefined();
+        if (!method_exists($this, 'model')) {
+            throw new NoModelDefined('Method model not defined');
         }
 
-        return app($this->entity());
+        $model = app($this->model());
+
+        if (!$model instanceof Model) {
+            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+        }
+
+        return $model;
     }
 
+    /**
+     * Build pagination.
+     *
+     * @param Builder  $query
+     * @param null|int $paginate
+     *
+     * @return Collection
+     */
     private function processPagination($query, $paginate)
     {
         return $paginate ? $query->paginate($paginate) : $query->get();
