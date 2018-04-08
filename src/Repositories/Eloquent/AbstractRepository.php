@@ -29,7 +29,7 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
      *
      * @return mixed
      */
-    public function all($paginate = null)
+    public function all()
     {
         return $this->model->get();
     }
