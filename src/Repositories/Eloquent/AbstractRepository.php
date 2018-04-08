@@ -35,6 +35,8 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     }
 
     /**
+     * find by id.
+     *
      * @param $id
      *
      * @return mixed
