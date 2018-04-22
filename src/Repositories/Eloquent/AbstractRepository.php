@@ -34,6 +34,11 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
         return $this->model->get();
     }
 
+    public function first()
+    {
+        return $this->model->first();
+    }
+
     /**
      * find by id.
      *

@@ -6,6 +6,8 @@ interface RepositoryInterface
 {
     public function all();
 
+    public function first();
+
     public function find($id);
 
     public function findWhere($column, $value);
